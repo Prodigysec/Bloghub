@@ -34,6 +34,7 @@ with app.app_context():
             p = Post(
                 title=fake.sentence(),
                 body=fake.text(),
+                category=rc(['Food', 'Tech', 'Cars', 'Sports', 'Art']),
                 user=rc(users)
             )
             posts.append(p)
