@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
+from flask import jsonify
 
 
 db = SQLAlchemy()
@@ -54,25 +55,43 @@ class Post(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String)
     body = db.Column(db.String)
+    category = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     user = db.relationship('User', back_populates='posts')
     comments = db.relationship('Comment', back_populates='post')
 
+    @validates("user_id")
+    def validates_user_id(self, key, user_id):
+        if type(user_id) != int:
+            response = {"error": "UserId must be an integer"}
+            return jsonify(response), 400
+        else:
+            return user_id
+
     @validates("title")
     def validates_title(self, key, title):
         if type(title) != str:
-            raise ValueError("Title must be a string")
+            response = {"error": "Title must be a string"}
+            return jsonify(response), 400
         else:
             return title
 
-    # validate the data type of category
-    @validates("content")
+    @validates("category")
     def validates_category(self, key, category):
-        if len(category) :
-            raise ValueError("Cannot publish an empty blog post")
+        if type(category) != str:
+            response = {"error": "Category must be a string"}
+            return jsonify(response), 400
         else:
             return category
+
+    @validates("body")
+    def validates_body(self, key, body):
+        if len(body) == 0:
+            response = {"error": "Cannot publish an empty post"}
+            return jsonify(response), 400
+        else:
+            return body
 
 
 class Comment(db.Model, SerializerMixin):
