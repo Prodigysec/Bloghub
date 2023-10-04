@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, make_response, jsonify, request
+from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
 from models import db, User, Post, Comment
 app = Flask(__name__)
@@ -18,6 +19,105 @@ db.init_app(app)
 def index():
     return '<h1>Welcome to Bloghub</h1>'
 
+
+@app.route('/posts', methods=['GET', 'POST', 'DELETE', 'PUT'])
+def get_posts():
+    posts = []
+    if request.method == 'GET':
+        for post in Post.query.all():
+            post_dict = {
+                "id": post.id,
+                "user_id": post.user_id,
+                "title": post.title,
+                "body": post.body,
+                "created_at": post.created_at,
+                "user": {
+                    "id": post.user.id,
+                    "username": post.user.username,
+                },
+            }
+            posts.append(post_dict)
+        response = make_response(
+            jsonify(posts),
+            200
+        )
+        return response
+    elif request.method == 'POST':
+        try:
+            data = request.get_json()
+            if not all(key in data for key in ['user_id', 'title', 'category', 'body']):
+                return jsonify({"error": "Invalid data"}), 400
+            post = Post(
+                user_id=data['user_id'],
+                title=data['title'],
+                category=data['category'],
+                body=data['body']
+            )
+            
+            db.session.add(post)
+            db.session.commit()
+            response = make_response(
+                jsonify({
+                    "message": "Post created"
+                }),
+                201
+            )
+            return response
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            error_message = "Database error: " + str(e)
+            return jsonify({"error": error_message}), 500
+    
+    elif request.method == 'DELETE':
+        try:
+            data = request.get_json()
+            if not all(key in data for key in ['user_id', 'id']):
+                return jsonify({"error": "Invalid data"}), 400
+
+            post = Post.query.filter_by(user_id=data['user_id'], id=data['id']).first()
+            if post:
+                db.session.delete(post)
+                db.session.commit()
+                response = make_response(
+                    jsonify({
+                        "message": "Post deleted"
+                    }),
+                    200
+                )
+                return response
+            else:
+                return jsonify({"error": "Post not found"}), 404
+               
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            error_message = "Database error: " + str(e)
+            return jsonify({"error": error_message}), 500
+    
+    elif request.method == 'PUT':
+        try:
+            data = request.get_json()
+            if not all(key in data for key in ['user_id', 'id', 'title', 'category', 'body']):
+                return jsonify({"error": "Invalid data"}), 400
+            
+            post = Post.query.filter_by(user_id=data['user_id'], id=data['id']).first()
+            if post:
+                post.title = data['title']
+                post.category = data['category']
+                post.body = data['body']
+                db.session.commit()
+                response = make_response(
+                    jsonify({
+                        "message": "Post updated"
+                    }),
+                    200
+                )
+                return response
+            else:
+                return jsonify({"error": "Post not found"}), 404
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            error_message = "Database error: " + str(e)
+            return jsonify({"error": error_message}), 500
 
 
 if __name__ == '__main__':
