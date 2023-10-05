@@ -4,10 +4,13 @@ from flask import Flask, make_response, jsonify, request, session, redirect, url
 from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
 from models import db, User, Post, Comment
+import os
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = os.environ.get('SECRET_KEY')
 
 app.json.compact = False
 migrate = Migrate(app, db)
@@ -26,6 +29,30 @@ def check_valid_user():
 @app.route('/')
 def index():
     return '<h1>Welcome to Bloghub</h1>'
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return ''
+    elif request.method == 'POST':
+        data = request.get_json()
+        if not all(key in data for key in ['username', 'email', 'password', 'bio']):
+            return jsonify({"error": "Invalid data"}), 400
+        
+        user = User.query.filter_by(username=data['username'], email=data['email']).first()
+        if user:
+            return jsonify({"error": "Username already exists"}), 409
+        
+        user = User(
+            username=data['username'],
+            email=data['email'],
+            password=data['password'],
+            bio=data['bio']
+        )
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"message": "User created"}), 201
 
 
 @app.route('/login', methods=['GET', 'POST'])
