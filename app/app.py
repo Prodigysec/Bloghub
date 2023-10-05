@@ -23,10 +23,26 @@ def check_valid_user():
             return redirect(url_for('login'))
     
 
-
 @app.route('/')
 def index():
     return '<h1>Welcome to Bloghub</h1>'
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return ''
+    elif request.method == 'POST':
+        data = request.get_json()
+        if not all(key in data for key in ['username', 'password']):
+            return jsonify({"error": "Invalid data"}), 400
+        
+        user = User.query.filter_by(username=data['username'], password=data['password']).first()
+        if user:
+            session['user'] = user.username
+            return jsonify({"message": "Login successful"}), 200
+        else:
+            return jsonify({"error": "Invalid credentials"}), 401
 
 
 @app.route('/posts', methods=['GET', 'POST', 'DELETE', 'PUT'])
