@@ -4,12 +4,14 @@ from flask import Flask, make_response, jsonify, request, session, redirect, url
 from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
 from models import db, User, Post, Comment
+from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+load_dotenv()
 app.secret_key = os.environ.get('SECRET_KEY')
 
 app.json.compact = False
@@ -21,7 +23,7 @@ db.init_app(app)
 # check if user has valid session
 @app.before_request
 def check_valid_user():
-    if not request.endpoint in ['login', 'signup','/']:
+    if not request.endpoint in ['login', 'signup','index']:
         if not session.get('user'):
             return redirect(url_for('login'))
     
