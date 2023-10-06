@@ -1,0 +1,23 @@
+/* singleBlog */
+
+.blog_container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.blog_title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.blog_body {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.blog_username {
+    color: #767575;
+    font-size: 14px;
+}
