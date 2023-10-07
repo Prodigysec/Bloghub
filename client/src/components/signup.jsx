@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import '../componentStyles/signup.css';
 
 function Signup() {
     const [username, setUsername] = useState("");
