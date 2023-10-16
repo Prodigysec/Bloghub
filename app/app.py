@@ -61,8 +61,7 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
-        # return jsonify({"message": "User created"}), 201
-        return render_template('signup.jsx')
+        return jsonify({"message": "User created"}), 201
 
 
 @app.route('/login', methods=['GET', 'POST'])
