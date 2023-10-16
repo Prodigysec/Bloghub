@@ -11,12 +11,14 @@ import Home from './components/home'
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home/> } />
-        <Route path='/signupPage' element={<Signup/> } />
-        <Route path='/loginPage' element={<Signin/> } />
-        <Route path='/blogsPage' element={<Blogs/> } />
-      </Routes>
+      <div className="App">
+        <Routes>
+          <Route path='/' element={<Home/> } />
+          <Route path='/signupPage' element={<Signup/> } />
+          <Route path='/loginPage' element={<Signin/> } />
+          <Route path='/blogsPage' element={<Blogs/> } />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }
