@@ -40,7 +40,7 @@ function Signin(){
         <div>
             {error ? <h3 style={{color: "red"}}>{error}</h3> : <h3 style={{color: "green"}}>{message}</h3>}
             <h2>Signin with Username.</h2>
-            <p>Don't have an account? <a href="/signup">Create an account</a></p>
+            <p>Don't have an account? <Link> to={`/signupPage`}</Link></p>
             <p>Enter your Username and<br />password to sign in to your account.</p>
 
             <form onSubmit={handleSubmit}>

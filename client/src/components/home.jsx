@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import '../componentStyles/home.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
@@ -8,9 +9,10 @@ function Home() {
         <h2>Bloghub</h2>
         <nav>
           <ul>
-            <li><a href="/about">About</a></li>
-            <li><a href="/blogs">Blogs</a></li>
-            <li><a href="/signup">SignUp</a></li>
+            <Link to={`/about`}>About</Link>
+            <Link to={`/blogsPage`}>Blogs</Link>
+            <Link to={`/signupPage`}>SignUp</Link>
+            <Link to={`/loginPage`}>Login</Link>
           </ul>
         </nav>
       </header>
