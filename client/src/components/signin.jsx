@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 // build signin component
@@ -43,7 +44,7 @@ function Signin(){
         <div>
             {error ? <h3 style={{color: "red"}}>{error}</h3> : <h3 style={{color: "green"}}>{message}</h3>}
             <h2>Signin with Username.</h2>
-            <p>Don't have an account? <a href="/signupPage">Create account</a></p>
+            <p>Don't have an account? <Link to="/signupPage">Create account</Link></p>
             <p>Enter your Username and<br />password to sign in to your account.</p>
 
             <form onSubmit={handleSubmit}>
