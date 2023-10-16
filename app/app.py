@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 
-from flask import Flask, make_response, jsonify, request, session, redirect, url_for
+from flask import Flask, make_response, jsonify, request, session, redirect, url_for, render_template
 from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
 from app.models import db, User, Post, Comment
 from dotenv import load_dotenv
 import os
 
-app = Flask(__name__)
+app = Flask(__name__,
+    static_url_path='',
+    static_folder='../client/dist',
+    template_folder='../client/dist'
+)
+
 load_dotenv()
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
@@ -30,8 +35,9 @@ def check_valid_user():
     
 
 @app.route('/')
-def index():
-    return '<h1>Welcome to Bloghub</h1>'
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template('index.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -55,7 +61,8 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
-        return jsonify({"message": "User created"}), 201
+        # return jsonify({"message": "User created"}), 201
+        return render_template('signup.jsx')
 
 
 @app.route('/login', methods=['GET', 'POST'])
