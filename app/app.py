@@ -3,7 +3,7 @@
 from flask import Flask, make_response, jsonify, request, session, redirect, url_for
 from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
-from models import db, User, Post, Comment
+from app.models import db, User, Post, Comment
 from dotenv import load_dotenv
 import os
 
@@ -21,11 +21,11 @@ db.init_app(app)
 
 
 # check if user has valid session
-@app.before_request
-def check_valid_user():
-    if not request.endpoint in ['login', 'signup','index']:
-        if not session.get('user'):
-            return redirect(url_for('login'))
+# @app.before_request
+# def check_valid_user():
+#     if not request.endpoint in ['login', 'signup','index']:
+#         if not session.get('user'):
+#             return redirect(url_for('login'))
     
 
 @app.route('/')
