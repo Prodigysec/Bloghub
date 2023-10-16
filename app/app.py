@@ -3,7 +3,7 @@
 from flask import Flask, make_response, jsonify, request, session, redirect, url_for, render_template
 from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
-from app.models import db, User, Post, Comment
+from models import db, User, Post, Comment
 from dotenv import load_dotenv
 import os
 
