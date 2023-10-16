@@ -6,7 +6,7 @@ function Blogs() {
 
     useEffect(() => {
         // make request to blogs endpoint
-        fetch("/api/posts", {
+        fetch("/posts", {
             method: "GET",
         })
         .then((res) => {

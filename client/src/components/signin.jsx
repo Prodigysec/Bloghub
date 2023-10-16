@@ -12,7 +12,7 @@ function Signin(){
         event.preventDefault();
 
         // send a fetch to /api/login
-        fetch("/api/login", {
+        fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
