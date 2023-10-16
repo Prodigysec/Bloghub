@@ -11,6 +11,9 @@ flask = "*"
 faker = "*"
 flask-migrate = "*"
 python-dotenv = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+flask-restful = "*"
 
 [dev-packages]
 
