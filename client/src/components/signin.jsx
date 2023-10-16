@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 // build signin component
 function Signin(){
@@ -6,6 +8,7 @@ function Signin(){
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
         // prevent the form from reloading the page
@@ -28,7 +31,7 @@ function Signin(){
             if (data.message === "Login successful") {
                 // redirect to blogs page after 2 seconds
                 setTimeout(() => {
-                    window.location.href = "/blogs";
+                    navigate('/blogsPage');
                 }, 2000);
             } else {
                 setError(data.error);
