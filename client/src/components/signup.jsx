@@ -40,7 +40,7 @@ function Signup() {
             if (data.message === "User created") {
                 // redirect to login page after 2 seconds
                 setTimeout(() => {
-                    window.location.href = "/signin";
+                    window.location.href = "/login";
                 }, 2000);
             } else {
                 setError(data.error);
