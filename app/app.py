@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+load_dotenv()
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-load_dotenv()
 app.secret_key = os.environ.get('SECRET_KEY')
 
 app.json.compact = False
