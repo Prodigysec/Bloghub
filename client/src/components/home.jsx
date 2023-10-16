@@ -9,10 +9,9 @@ function Home() {
         <h2>Bloghub</h2>
         <nav>
           <ul>
-            <Link to={`/about`}>About</Link>
             <Link to={`/blogsPage`}>Blogs</Link>
-            <Link to={`/signupPage`}>SignUp</Link>
             <Link to={`/loginPage`}>Login</Link>
+            <Link to={`/signupPage`}>SignUp</Link>
           </ul>
         </nav>
       </header>
